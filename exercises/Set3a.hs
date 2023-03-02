@@ -12,6 +12,7 @@ import Mooc.Todo
 import Data.Char
 import Data.Either
 import Data.List
+import Test.Hspec (xcontext)
 
 ------------------------------------------------------------------------------
 -- Ex 1: implement the function maxBy that takes as argument a
@@ -303,4 +304,18 @@ multiApp' f (g:gs) x y = multiApp' f gs x (y ++ [g x])
 -- function, the surprise won't work. See section 3.8 in the material.
 
 interpreter :: [String] -> [String]
-interpreter commands = todo
+interpreter commands = interpreter' commands (0, 0)
+
+interpreter' :: [String] -> (Int, Int) -> [String]
+interpreter' [] (_, _) = []
+interpreter' (c : cs) (x, y) = out ++ interpreter' cs (x + dx, y + dy)
+    where Left (dx, dy) = if isLeft res then res else Left (0, 0)
+          Right out = if isRight res then res else Right []
+          res = case c of
+            "left" -> Left (-1, 0)
+            "right" -> Left (1, 0)
+            "up" -> Left(0, 1)
+            "down" -> Left(0, -1)
+            "printX" -> Right [show x]
+            "printY" -> Right [show y]
+            _ -> Left (0, 0)
