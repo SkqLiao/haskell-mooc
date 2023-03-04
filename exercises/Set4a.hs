@@ -184,6 +184,8 @@ get [] mp = mp
 get (x:xs) mp = get xs (Map.alter fun x mp)
 
 
+-- freqs = foldr (Map.alter $ Just . maybe 1 (+1)) Map.empty
+
 ------------------------------------------------------------------------------
 -- Ex 10: recall the withdraw example from the course material. Write a
 -- similar function, transfer, that transfers money from one account
